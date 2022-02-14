@@ -2,16 +2,15 @@ package com.example.agenda.ui.activity;
 
 import static com.example.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -23,9 +22,6 @@ import com.example.agenda.dao.AlunoDAO;
 import com.example.agenda.model.Aluno;
 import com.example.agenda.ui.adapter.ListaAlunoAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ListaAlunoActivity extends AppCompatActivity {
     public static final String TITULO_APPBAR = "Lista de alunos";
@@ -39,9 +35,6 @@ public class ListaAlunoActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR);
         configuraFabNovoAluno();
         configuraLista();
-
-        dao.save(new Aluno("Alex", "1122223333", "alex@alura.com.br"));
-        dao.save(new Aluno("Fran", "1122223333", "fran@gmail.com"));
     }
 
     @Override
@@ -61,12 +54,28 @@ public class ListaAlunoActivity extends AppCompatActivity {
 
         int itemId = item.getItemId();
         if (itemId == R.id.activity_lista_alunos_menu_remover) {
-            AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-            Aluno aluno = adapter.getItem(menuInfo.position);
-            remove(aluno);
+            confirmaRemocao(item);
         }
 
         return super.onContextItemSelected(item);
+    }
+
+    private void confirmaRemocao(@NonNull final MenuItem item) {
+        new AlertDialog
+                .Builder(this)
+                .setTitle("Removendo aluno")
+                .setMessage("Tem certeza que quer remover o aluno?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AdapterView.AdapterContextMenuInfo menuInfo =
+                                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                        Aluno alunoEscolhido = adapter.getItem(menuInfo.position);
+                        remove(alunoEscolhido);
+                    }
+                })
+                .setNegativeButton("Não", null)
+                .show();
     }
 
     private void abreFormularioAlunoModoInsereAluno() {
@@ -84,8 +93,7 @@ public class ListaAlunoActivity extends AppCompatActivity {
     }
 
     private void atualizaAlunos() {
-        adapter.clear();
-        adapter.addAll(dao.all());
+        adapter.atualiza(dao.all());
     }
 
     private void configuraLista() {

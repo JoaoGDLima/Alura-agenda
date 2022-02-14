@@ -16,7 +16,7 @@ import java.util.List;
 public class ListaAlunoAdapter extends BaseAdapter {
 
     private final List<Aluno> alunos = new ArrayList<>();
-    private Context context;
+    private final Context context;
 
     public ListaAlunoAdapter(Context context) {
         this.context = context;
@@ -39,28 +39,41 @@ public class ListaAlunoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View viewCriada = LayoutInflater
-                .from(context)
-                .inflate(R.layout.item_aluno, viewGroup, false);
-
-        TextView nome = viewCriada.findViewById(R.id.item_aluno_nome);
-        TextView telefone = viewCriada.findViewById(R.id.item_aluno_telefone);
-
-        nome.setText(this.alunos.get(i).getNome());
-        telefone.setText(this.alunos.get(i).getNome());
-
+        View viewCriada = CriaView(viewGroup);
+        vincula(viewCriada, this.alunos.get(i));
         return viewCriada;
     }
 
-    public void clear() {
+    private void vincula(View viewCriada, Aluno aluno) {
+        TextView nome = viewCriada.findViewById(R.id.item_aluno_nome);
+        TextView telefone = viewCriada.findViewById(R.id.item_aluno_telefone);
+        nome.setText(aluno.getNome());
+        telefone.setText(aluno.getTelefone());
+    }
+
+    private View CriaView(ViewGroup viewGroup) {
+        return LayoutInflater
+                .from(context)
+                .inflate(R.layout.item_aluno, viewGroup, false);
+    }
+
+    private void clear() {
         this.alunos.clear();
     }
 
-    public void addAll(List<Aluno> alunos) {
+    private void addAll(List<Aluno> alunos) {
         this.alunos.addAll(alunos);
     }
 
     public void remove(Aluno aluno) {
-        this.remove(aluno);
+        this.alunos.remove(aluno);
+        notifyDataSetChanged();
     }
+
+    public void atualiza(List<Aluno> alunos){
+        this.alunos.clear();
+        this.alunos.addAll(alunos);
+        notifyDataSetChanged();
+    }
+
 }
