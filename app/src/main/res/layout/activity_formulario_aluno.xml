@@ -13,21 +13,24 @@
                 <EditText android:id="@+id/activity_formulario_aluno_nome"
                     android:layout_width="match_parent"
                     android:layout_margin="8dp"
-                    android:hint="Nome"
+                    android:hint="@string/Nome"
                     android:inputType="textCapWords"
+                    android:autofillHints="name"
                     android:layout_height="wrap_content" />
 
                 <EditText android:id="@+id/activity_formulario_aluno_telefone"
                     android:layout_width="match_parent"
                     android:layout_margin="8dp"
-                    android:hint="Telefone"
+                    android:hint="@string/Telefone"
                     android:inputType="phone"
+                    android:autofillHints="phone"
                     android:layout_height="wrap_content" />
 
                 <EditText android:id="@+id/activity_formulario_aluno_email"
                     android:layout_width="match_parent"
                     android:layout_margin="8dp"
-                    android:hint="E-mail"
+                    android:hint="@string/Email"
+                    android:autofillHints="emailAddress"
                     android:inputType="textEmailAddress"
                     android:layout_height="wrap_content" />
 

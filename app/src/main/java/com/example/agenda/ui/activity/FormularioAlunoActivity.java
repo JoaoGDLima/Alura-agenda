@@ -2,18 +2,14 @@ package com.example.agenda.ui.activity;
 
 import static com.example.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agenda.R;
 import com.example.agenda.dao.AlunoDAO;
@@ -26,7 +22,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoTelefone;
     private EditText campoEmail;
     private Aluno aluno;
-    private AlunoDAO dao = new AlunoDAO();
+    private final AlunoDAO dao = new AlunoDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +68,10 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void finalizaFormulario() {
         preencheAluno();
-        if (aluno.temIDValido())
-            dao.edit(aluno);
+        if (this.aluno.temIDValido())
+            AlunoDAO.edit(this.aluno);
         else
-            dao.save(aluno);
+            this.dao.save(this.aluno);
 
         finish();
     }
@@ -86,7 +82,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoEmail = findViewById(R.id.activity_formulario_aluno_email);
     }
 
-    @NonNull
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
         String telefone = campoTelefone.getText().toString();

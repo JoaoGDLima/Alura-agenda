@@ -57,14 +57,6 @@ public class ListaAlunoAdapter extends BaseAdapter {
                 .inflate(R.layout.item_aluno, viewGroup, false);
     }
 
-    private void clear() {
-        this.alunos.clear();
-    }
-
-    private void addAll(List<Aluno> alunos) {
-        this.alunos.addAll(alunos);
-    }
-
     public void remove(Aluno aluno) {
         this.alunos.remove(aluno);
         notifyDataSetChanged();
